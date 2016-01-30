@@ -1,8 +1,13 @@
 from decimal import Decimal as D
+import json
+import requests
 
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 from oscar.core import prices
+from oscar.apps.shipping.abstract_models import AbstractWeightBased
+from apps.rajaongkir_cities.models import RajaongkirCity
 
 
 class Base(object):
@@ -173,3 +178,42 @@ class TaxInclusiveOfferDiscount(OfferDiscount):
     def discount(self, basket):
         base_charge = self.method.calculate(basket)
         return self.offer.shipping_discount(base_charge.incl_tax)
+
+
+class JNEReguler(AbstractWeightBased):
+    def __init__(self, basket, shipping_addr):
+        self.shipping_addr = shipping_addr
+        self.basket = basket
+
+    code = 'JNE reguler'
+    name = 'JNE reguler'
+
+    def get_cost(self, origin_id, destination_name, weight):
+        destination = RajaongkirCity.objects.get(city_name=destination_name)
+        destination = destination.city_id
+        payload = {'origin': origin_id, 'destination': destination, 'weight': weight, 'courier': 'jne'}
+
+        headers = {
+            'key': settings.RAJAONGKIR_KEY,
+            'content-type': "application/x-www-form-urlencoded"
+        }
+
+        r = requests.post('http://api.rajaongkir.com/starter/cost', data=payload, headers=headers)
+        parsed = json.loads(r.text)
+        for shipping_type in parsed['rajaongkir']['results'][0]['costs']:
+            if shipping_type['service'] == 'REG':
+                return shipping_type['cost'][0]['value']
+
+    def calculate(self, basket):
+        # Note, when weighing the basket, we don't check whether the item
+        # requires shipping or not.  It is assumed that if something has a
+        # weight, then it requires shipping.
+        weight = 0
+        for line in basket.lines.all():
+            weight += line.product.weight * line.quantity
+        print weight
+        cost = self.get_cost(settings.SHIPPING_ORIGIN, self.shipping_addr.city, weight)
+
+        return prices.Price(
+            currency=basket.currency,
+            excl_tax=D(cost), incl_tax=D(cost))

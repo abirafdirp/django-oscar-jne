@@ -15,6 +15,7 @@ class Repository(object):
     # We default to just free shipping. Customise this class and override this
     # property to add your own shipping methods. This should be a list of
     # instantiated shipping methods.
+    shipping_addr = ''
     methods = (shipping_methods.Free(),)
 
     # API
@@ -24,6 +25,8 @@ class Repository(object):
         Return a list of all applicable shipping method instances for a given
         basket, address etc.
         """
+        self.methods = self.methods + (shipping_methods.JNEReguler(basket, shipping_addr),)
+
         if not basket.is_shipping_required():
             # Special case! Baskets that don't require shipping get a special
             # shipping method.

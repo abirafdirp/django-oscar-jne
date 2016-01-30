@@ -1,3 +1,13 @@
+==============
+What's changed
+==============
+this repo is based on 1.1.1 release
+* added jne reguler shipping method with the help of rajaongkir. you must set RAJAONGKIR_KEY in your settings.
+    This feature is dependenant on rajaongkir_cities app
+* added has_descendants() in category model
+* added weight to product model
+
+
 .. image:: https://github.com/django-oscar/django-oscar/raw/master/docs/images/logos/oscar.png
     :target: http://oscarcommerce.com
 

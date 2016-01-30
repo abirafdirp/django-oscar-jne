@@ -187,9 +187,8 @@ class AbstractCategory(MP_Node):
 
     def has_descendants(self):
         """
-        Gets descendants and includes itself. Use treebeard's get_descendants
-        if you don't want to include the category itself. It's a separate
-        function as it's commonly used in templates.
+        Returns boolean whether the category has descendants or not. Used
+        in templates.
         """
         if len(list(self.get_descendants())) == 0:
             has_descendants = False
@@ -349,6 +348,8 @@ class AbstractProduct(models.Model):
 
     objects = ProductManager()
     browsable = BrowsableProductManager()
+
+    weight = models.IntegerField(blank=True, null=True)
 
     class Meta:
         abstract = True
