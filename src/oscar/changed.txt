@@ -1,0 +1,4 @@
+remove some fields on shipping form
+change phone number model from PhoneNumber to CharField
+completely removed country from shipping
+force language to use what specified in the settings (browser tends to send its local language)
