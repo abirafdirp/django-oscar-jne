@@ -14,6 +14,7 @@ Run::
 What's changed
 ==============
 this repo is based on 1.1.1 release
+
 * Added jne reguler shipping method with the help from rajaongkir. You must set RAJAONGKIR_KEY and SHIPPING_ORIGIN in your settings, SHIPPING_ORIGIN is must be a rajaongkir city ID.
 * Added updaterajaongkir management command. This will populate your cities with rajaongkir's data.
 * Added has_descendants() in category model (for frontend usage)
