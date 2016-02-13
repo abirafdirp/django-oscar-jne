@@ -26,7 +26,10 @@ this repo is based on 1.1.1 release
 * Change phone_number field to char_field to remove international validation (was oscar's phone field)
 * Removed many unused fields in shipping address, because this app is only intended for local usage only (Indonesia)
 
-
+====
+TODO
+====
+* Add proper exception when rajaongkir API call fails.
 .. image:: https://github.com/django-oscar/django-oscar/raw/master/docs/images/logos/oscar.png
     :target: http://oscarcommerce.com
 
