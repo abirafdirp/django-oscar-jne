@@ -1,11 +1,24 @@
+==========
+Quickstart
+==========
+Specify these in your settings::
+
+    RAJAONGKIR_KEY = <your rajaongkir key>
+    SHIPPING_ORIGIN = <your shipping origin in form of rajaongkir city ID>
+
+Run::
+
+    python manage.py updaterajaongkir
+
 ==============
 What's changed
 ==============
 this repo is based on 1.1.1 release
-* added jne reguler shipping method with the help of rajaongkir. you must set RAJAONGKIR_KEY in your settings.
-    This feature is dependenant on rajaongkir_cities app
-* added has_descendants() in category model
-* added weight to product model
+* Added jne reguler shipping method with the help from rajaongkir. You must set RAJAONGKIR_KEY and SHIPPING_ORIGIN in your settings, SHIPPING_ORIGIN is must be a rajaongkir city ID.
+* Added updaterajaongkir management command. This will populate your cities with rajaongkir's data.
+* Added has_descendants() in category model (for frontend usage)
+* Added weight to product model
+* Removed many unused fields in shipping address, because this app is only intended for local usage only (Indonesia)
 
 
 .. image:: https://github.com/django-oscar/django-oscar/raw/master/docs/images/logos/oscar.png

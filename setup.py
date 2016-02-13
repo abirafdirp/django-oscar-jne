@@ -18,7 +18,7 @@ from oscar import get_version
 
 setup(name='django-oscar',
       version=get_version().replace(' ', '-'),
-      url='https://github.com/abirafdirp/revania.git',
+      url='https://github.com/abirafdirp/django-oscar-jne.git',
       author="David Winterbottom",
       author_email="david.winterbottom@gmail.com",
       description="A domain-driven e-commerce framework for Django",
