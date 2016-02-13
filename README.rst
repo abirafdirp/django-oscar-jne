@@ -1,6 +1,10 @@
 ==========
 Quickstart
 ==========
+Install::
+
+    pip install git+git://github.com/abirafdirp/django-oscar-jne.git
+
 Specify these in your settings::
 
     RAJAONGKIR_KEY = <your rajaongkir key>
@@ -19,6 +23,7 @@ this repo is based on 1.1.1 release
 * Added updaterajaongkir management command. This will populate your cities with rajaongkir's data.
 * Added has_descendants() in category model (for frontend usage)
 * Added weight to product model
+* Change phone_number field to char_field to remove international validation (was oscar's phone field)
 * Removed many unused fields in shipping address, because this app is only intended for local usage only (Indonesia)
 
 

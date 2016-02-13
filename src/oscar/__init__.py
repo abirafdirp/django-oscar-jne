@@ -1,5 +1,4 @@
 import os
-from django.conf import settings
 
 # Use 'dev', 'beta', or 'final' as the 4th element to indicate release type.
 VERSION = (1, 1, 1, 'final')
@@ -73,9 +72,6 @@ def get_core_apps(overrides=None):
     """
     Return a list of oscar's apps amended with any passed overrides
     """
-    if not settings.RAJAONGKIR_KEY or not settings.SHIPPING_ORIGIN:
-        raise Exception('You must specify RAJAONGKIR_KEY and SHIPPING_ORIGIN in your settings')
-	
     if not overrides:
         return OSCAR_CORE_APPS
 
