@@ -194,28 +194,37 @@ class JNEBase(AbstractWeightBased):
         # because there are some multiple same cities from rajaongkir, we just get the first one
         # I need to get clarification from rajaongkir why there are multiple same cities
         destination = RajaongkirCity.objects.filter(city_name=destination_name)
-        destination = destination[0].city_id
+        destination = str(destination[0].city_id)
         payload = {'origin': origin_id, 'destination': destination, 'weight': weight, 'courier': 'jne'}
-
         headers = {
-            'key': "be8ff21f6c646accd40b895c219d8f66",
+            'key': settings.RAJAONGKIR_KEY,
             'content-type': "application/x-www-form-urlencoded"
         }
 
         r = requests.post('http://api.rajaongkir.com/starter/cost', data=payload, headers=headers)
         parsed = json.loads(r.text)
         for shipping_type in parsed['rajaongkir']['results'][0]['costs']:
-            if shipping_type['service'] == self.service:
-                return shipping_type['cost'][0]['value']
+            for service in self.service:
+                print service
+                if shipping_type['service'] == service:
+                    return shipping_type['cost'][0]['value']
 
     def calculate(self, basket):
         # Note, when weighing the basket, we don't check whether the item
         # requires shipping or not.  It is assumed that if something has a
-        # weight, then it requires shipping.
+        # weight, then it requires shipping..
+
+        # this will happens when guest view the basket (doesn't have address)
+        if not self.shipping_addr:
+            cost = 0
+            return prices.Price(
+                currency=basket.currency,
+                excl_tax=D(cost), incl_tax=D(cost))
+
         weight = 0
         for line in basket.lines.all():
             weight += line.product.weight * line.quantity
-        cost = self.get_cost(settings.SHIPPING_ORIGIN, self.shipping_addr.city, weight)
+        cost = self.get_cost(settings.SHIPPING_ORIGIN, self.shipping_addr.city.city_name, weight)
         if not cost:
             raise SuspiciousOperation('Something wrong when pulling shipping cost')
         return prices.Price(
@@ -229,11 +238,11 @@ class JNEBase(AbstractWeightBased):
 class JNEReguler(JNEBase):
     code = 'JNE Reguler'
     name = 'JNE Reguler (1-3 hari)'
-    service = "REG"
+    service = ("REG", "CTCOKE")
 
 
 class JNEYes(JNEBase):
     code = 'JNE YES'
     name = 'JNE YES (1 hari)'
-    service = "YES"
+    service = ("YES", "CTCYES")
 

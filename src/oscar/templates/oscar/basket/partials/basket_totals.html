@@ -93,15 +93,12 @@
                 <tr>
                     <th colspan="2">
                         <h3>{% trans "Shipping" %}</h3>
-                        {% if shipping_methods|length > 1 and editable %}
-                            <small>{% trans "Alternative shipping methods can be chosen during checkout" %}</small>
-                        {% endif %}
                     </th>
                 </tr>
                 {% if not shipping_method.is_discounted %}
                     <tr>
                         <th class="total">
-                            {{ shipping_method.name }}
+                            {% trans "Shipping methods can be chosen during checkout" %}
                         </th>
                         <th class="total align-right">
                             {% if not show_tax_separately and shipping_charge.is_tax_known %}
