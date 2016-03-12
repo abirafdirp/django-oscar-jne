@@ -98,7 +98,11 @@
                 {% if not shipping_method.is_discounted %}
                     <tr>
                         <th class="total">
-                            {% trans "Shipping methods can be chosen during checkout" %}
+                            {% if shipping_charge.excl_tax or shipping_charge.incl_tax %}
+                                {{ shipping_method.name }}
+                            {% else %}
+                                {% trans "Shipping methods can be chosen during checkout" %}
+                            {% endif %}
                         </th>
                         <th class="total align-right">
                             {% if not show_tax_separately and shipping_charge.is_tax_known %}
